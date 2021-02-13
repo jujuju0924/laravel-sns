@@ -11,7 +11,13 @@
 |
 */
 
+use App\Http\Controllers\ArticleController;
+
 Auth::routes(); //-- この行を追加
 Route::get('/', 'ArticleController@index')->name('articles.index');
 Route::resource('/articles','ArticleController')->except(['index'])->middleware('auth');
 Route::resource('/articles','ArticleController')->only(['show']);
+Route::prefix('articles')->name('articles.')->group(function(){
+  Route::put('/{article}/like', 'ArticleController@like')->name('like')->middleware('auth');
+  Route::delete('/{article}/like', 'ArticleController@unlike')->name('unlike')->middleware('auth');
+});
